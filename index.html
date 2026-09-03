@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>Jul i hamn 2026 – v0.1.7</title>
+<meta name="theme-color" content="#243056" />
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Jul i hamn" />
+<title>Jul i hamn 2026 – v0.1.9</title>
 <style>
 :root{
   --navy:#243056;
@@ -47,10 +52,11 @@ table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 8px;
 .smallbtn{padding:7px 9px;font-size:12px}
 .result{display:none;background:linear-gradient(180deg,#fff,#fbf7ef);border:2px solid #dde6e8}.result.show{display:block}.resultHead{text-align:center;padding:10px 4px 4px}.resultHead h2{font-size:30px;margin-bottom:4px}.resultHead p{margin:0;color:var(--muted)}
 .resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.resultStat{border-radius:14px;padding:18px;background:#fff;border:1px solid var(--line);text-align:center}.resultStat strong{display:block;font-size:36px;color:var(--navy)}.thanks{text-align:center;font-size:18px;font-weight:700;color:var(--navy);padding:10px 20px 4px}.logosBottom{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
+.printShips{display:none;margin-top:26px;border-top:1px solid var(--line);padding-top:18px}.printShips h3{margin:0 0 10px;color:var(--navy);font-size:20px}.printShips ul{margin:0;padding-left:22px;columns:2;column-gap:34px}.printShips li{margin:0 0 6px;break-inside:avoid;font-size:14px}
 .note{font-size:12px;color:var(--muted);margin-top:10px}
 footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 @media(max-width:700px){h1{font-size:36px}.stats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.grid .wide{grid-column:1/-1}.tablewrap{overflow:auto}.resultStats{grid-template-columns:1fr}.brandrow{display:block}.version{margin-top:10px}}
-@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}}
+@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}.result .actions{display:none!important}.printShips{display:block!important}}
 </style>
 </head>
 <body>
@@ -61,7 +67,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
         <div class="logo nh">Norrköpings<br>Hamn</div>
         <div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div>
       </div>
-      <div class="version">Prototyp v0.1.7</div>
+      <div class="version">Prototyp v0.1.9</div>
     </div>
     <h1>Jul i hamn 2026</h1>
     <p>Sprid lite julglädje till sjömän långt hemifrån.</p>
@@ -116,6 +122,10 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
         <div class="resultStat"><strong id="resGifts">0</strong>julgåvor utdelade</div>
       </div>
       <div class="thanks" id="thanksText">Tack till alla företag och organisationer som gjorde Jul i hamn möjligt.</div>
+      <div class="printShips">
+        <h3>Besökta fartyg</h3>
+        <ul id="printShipList"></ul>
+      </div>
       <div class="actions" style="justify-content:center;margin-top:18px">
         <button class="primary" onclick="window.print()">Skriv ut / spara som PDF</button>
         <button type="button" class="ghost" id="hideResultBtn" onclick="hideResult()">Tillbaka</button>
@@ -146,6 +156,7 @@ function render(){
  $('statShips').textContent=t.ships;$('statCrew').textContent=t.crew;$('statGifts').textContent=t.gifts;
  $('resShips').textContent=t.ships;$('resCrew').textContent=t.crew;$('resGifts').textContent=t.gifts;
  $('shipRows').innerHTML=ships.length?ships.map((x,i)=>`<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num">${+x.gifts||0}</td><td class="num"><button class="ghost smallbtn" onclick="removeShip(${i})">Ta bort</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
+ $('printShipList').innerHTML=ships.length?ships.map(x=>`<li>${esc(x.ship)}${x.date?` – ${fmtDate(x.date)}`:''}</li>`).join(''):'<li>Inga fartyg registrerade.</li>';
 }
 window.removeShip=i=>{ships.splice(i,1);save()};
 function addShip(){
