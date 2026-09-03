@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Jul i hamn 2026 – v0.1.7</title>
+<style>
+:root{
+  --navy:#243056;
+  --teal:#2f7f86;
+  --teal2:#6bb0ad;
+  --sand:#f4efe7;
+  --paper:#ffffff;
+  --ink:#15212b;
+  --muted:#65727d;
+  --line:#dbe2e6;
+  --ok:#2f7d58;
+  --danger:#a33b3b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#dfeff0 0,#f7f3ec 46%,#f7f3ec 100%);color:var(--ink)}
+.app{max-width:920px;margin:0 auto;min-height:100vh;background:rgba(255,255,255,.72)}
+.hero{position:relative;padding:28px 22px 24px;background:linear-gradient(135deg,var(--teal),#3b8f95 55%,var(--teal2));color:#fff;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-70px;bottom:-95px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.09)}
+.brandrow{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
+.brand{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.logo{background:#fff;color:var(--navy);border-radius:8px;padding:8px 10px;font-weight:700;font-size:12px;line-height:1.05;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.logo.nh{background:var(--navy);color:#fff;letter-spacing:.1px}.logo.placeholder{border:1px dashed rgba(36,48,86,.4);font-weight:600}
+.version{font-size:12px;opacity:.8;margin-top:2px}
+h1{font-size:42px;line-height:1;margin:34px 0 8px;letter-spacing:-1.2px}
+.hero p{margin:0;font-size:17px;font-weight:600;max-width:610px}
+.main{padding:18px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:-6px}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:15px 13px;text-align:center;box-shadow:0 4px 12px rgba(25,39,52,.05)}
+.stat .n{font-size:30px;font-weight:800;color:var(--navy)}
+.stat .l{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;box-shadow:0 4px 14px rgba(25,39,52,.04)}
+.card h2{margin:0 0 14px;font-size:20px;color:var(--navy)}
+.grid{display:grid;grid-template-columns:1fr;gap:10px}
+.grid>div{min-width:0;max-width:100%}.grid .wide{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}
+input{width:100%;min-width:0;max-width:100%;font:inherit;border:1px solid #cdd7dc;border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink)}
+input:focus{outline:2px solid rgba(47,127,134,.2);border-color:var(--teal)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button{appearance:none;border:0;border-radius:10px;padding:11px 14px;font:inherit;font-weight:700;cursor:pointer}
+.primary{background:var(--navy);color:#fff}.secondary{background:#e9f1f2;color:var(--navy)}.ghost{background:#fff;border:1px solid var(--line);color:var(--navy)}.danger{background:#fff0f0;color:var(--danger);border:1px solid #f0caca}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}td.num,th.num{text-align:right}.empty{padding:22px 6px;color:var(--muted);text-align:center}
+.smallbtn{padding:7px 9px;font-size:12px}
+.result{display:none;background:linear-gradient(180deg,#fff,#fbf7ef);border:2px solid #dde6e8}.result.show{display:block}.resultHead{text-align:center;padding:10px 4px 4px}.resultHead h2{font-size:30px;margin-bottom:4px}.resultHead p{margin:0;color:var(--muted)}
+.resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.resultStat{border-radius:14px;padding:18px;background:#fff;border:1px solid var(--line);text-align:center}.resultStat strong{display:block;font-size:36px;color:var(--navy)}.thanks{text-align:center;font-size:18px;font-weight:700;color:var(--navy);padding:10px 20px 4px}.logosBottom{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
+.note{font-size:12px;color:var(--muted);margin-top:10px}
+footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:700px){h1{font-size:36px}.stats{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}.grid .wide{grid-column:1/-1}.tablewrap{overflow:auto}.resultStats{grid-template-columns:1fr}.brandrow{display:block}.version{margin-top:10px}}
+@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="brandrow">
+      <div class="brand">
+        <div class="logo nh">Norrköpings<br>Hamn</div>
+        <div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div>
+      </div>
+      <div class="version">Prototyp v0.1.7</div>
+    </div>
+    <h1>Jul i hamn 2026</h1>
+    <p>Sprid lite julglädje till sjömän långt hemifrån.</p>
+  </header>
+
+  <main class="main">
+    <section class="stats" aria-label="Statistik">
+      <div class="stat"><div class="n" id="statShips">0</div><div class="l">Fartyg</div></div>
+      <div class="stat"><div class="n" id="statCrew">0</div><div class="l">Sjömän</div></div>
+      <div class="stat"><div class="n" id="statGifts">0</div><div class="l">Julgåvor</div></div>
+    </section>
+
+    <section class="card">
+      <h2>Registrera utdelning</h2>
+      <div class="grid">
+        <div class="wide"><label for="ship">Fartyg</label><input id="ship" placeholder="Ex. M/T Example"></div>
+        <div><label for="date">Datum</label><input id="date" type="date"></div>
+        <div><label for="crew">Sjömän</label><input id="crew" type="number" min="0" inputmode="numeric" placeholder="0"></div>
+        <div><label for="gifts">Julgåvor</label><input id="gifts" type="number" min="0" inputmode="numeric" placeholder="0"></div>
+      </div>
+      <div class="actions">
+        <button type="button" class="primary" id="addBtn" onclick="addShip()">Lägg till</button>
+        <button type="button" class="secondary" id="resultBtn" onclick="showResult()">Visa resultat</button>
+      </div>
+      <div class="note">Uppgifterna sparas bara på den här enheten i prototypen.</div>
+    </section>
+
+
+    <section class="card">
+      <h2>Registrerade fartyg</h2>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Fartyg</th><th>Datum</th><th class="num">Sjömän</th><th class="num">Julgåvor</th><th></th></tr></thead>
+          <tbody id="shipRows"></tbody>
+        </table>
+      </div>
+      <div class="actions"><button type="button" class="danger smallbtn" id="clearBtn" onclick="clearData()">Rensa all testdata</button></div>
+    </section>
+
+    <section class="card result" id="resultCard">
+      <div class="resultHead">
+        <div class="brand" style="justify-content:center;margin-bottom:16px">
+          <div class="logo nh">Norrköpings<br>Hamn</div>
+          <div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div>
+        </div>
+        <h2>Jul i hamn 2026</h2>
+        <p>Tillsammans sprider vi julglädje till sjömän långt hemifrån</p>
+      </div>
+      <div class="resultStats">
+        <div class="resultStat"><strong id="resShips">0</strong>fartyg besökta</div>
+        <div class="resultStat"><strong id="resCrew">0</strong>sjömän nådda</div>
+        <div class="resultStat"><strong id="resGifts">0</strong>julgåvor utdelade</div>
+      </div>
+      <div class="thanks" id="thanksText">Tack till alla företag och organisationer som gjorde Jul i hamn möjligt.</div>
+      <div class="actions" style="justify-content:center;margin-top:18px">
+        <button class="primary" onclick="window.print()">Skriv ut / spara som PDF</button>
+        <button type="button" class="ghost" id="hideResultBtn" onclick="hideResult()">Tillbaka</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>Jul i hamn 2026 · Norrköpings Hamn + Sjömanskyrkan i Norrköping</footer>
+</div>
+<script>
+const STORE_SHIPS='julihamn2026_ships_v01';
+let ships=[];
+try{
+  ships=JSON.parse(localStorage.getItem(STORE_SHIPS)||'[]');
+}catch(e){
+  ships=[];
+}
+const $=id=>document.getElementById(id);
+function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function save(){
+  try{localStorage.setItem(STORE_SHIPS,JSON.stringify(ships));}catch(e){}
+  render();
+}
+function totals(){return {ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts:ships.reduce((a,x)=>a+(+x.gifts||0),0)}}
+function fmtDate(d){if(!d)return '–';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}`:d}
+function render(){
+ const t=totals();
+ $('statShips').textContent=t.ships;$('statCrew').textContent=t.crew;$('statGifts').textContent=t.gifts;
+ $('resShips').textContent=t.ships;$('resCrew').textContent=t.crew;$('resGifts').textContent=t.gifts;
+ $('shipRows').innerHTML=ships.length?ships.map((x,i)=>`<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num">${+x.gifts||0}</td><td class="num"><button class="ghost smallbtn" onclick="removeShip(${i})">Ta bort</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
+}
+window.removeShip=i=>{ships.splice(i,1);save()};
+function addShip(){
+ const ship=$('ship').value.trim(),date=$('date').value,crew=+$('crew').value||0,gifts=+$('gifts').value||0;
+ if(!ship){alert('Skriv in fartygsnamn.');return;}
+ ships.push({ship,date,crew,gifts});
+ $('ship').value='';$('crew').value='';$('gifts').value='';
+ save();
+}
+function showResult(){
+ $('resultCard').classList.add('show');
+ $('resultCard').scrollIntoView({behavior:'smooth'});
+}
+function hideResult(){
+ $('resultCard').classList.remove('show');
+}
+function clearData(){
+ if(confirm('Rensa all testdata i prototypen?')){ships=[];save();}
+}
+$('date').value=new Date().toISOString().slice(0,10);
+render();
+</script>
+</body>
+</html>
