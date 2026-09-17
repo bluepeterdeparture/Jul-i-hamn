@@ -151,7 +151,17 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 </div>
 <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script><script>
-const STORE_SHIPS='julihamn2026_ships_v01';
+const firebaseConfig = {
+  apiKey: "AIzaSyBAYZk96JGVKOe6dqzifplj3wEylJ5V92M",
+  authDomain: "jul-i-hamn-2026.firebaseapp.com",
+  projectId: "jul-i-hamn-2026",
+  storageBucket: "jul-i-hamn-2026.firebasestorage.app",
+  messagingSenderId: "654694924451",
+  appId: "1:654694924451:web:4f2bccb88ec8ab988eff16"
+};
+  firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+  const STORE_SHIPS='julihamn2026_ships_v01';
 const STORE_RECEIVED='julihamn2026_received_v01';
 let received=+(localStorage.getItem(STORE_RECEIVED)||0);
 let ships=[];
