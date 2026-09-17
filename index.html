@@ -176,6 +176,8 @@ const firebaseConfig = {
   firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
   const auth = firebase.auth();
+  const cloudDoc = db.collection('julihamn').doc('data');
+  async function saveCloud(){await cloudDoc.set({received,ships});}
   const STORE_SHIPS='julihamn2026_ships_v01';
 const STORE_RECEIVED='julihamn2026_received_v01';
 let received=+(localStorage.getItem(STORE_RECEIVED)||0);
@@ -189,7 +191,9 @@ const $=id=>document.getElementById(id);
 function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
 function save(){
   try{localStorage.setItem(STORE_SHIPS,JSON.stringify(ships));}catch(e){}
+db.collection('julihamn').doc('data').set({ships:ships},{merge:true});
   render();
+  
 }
 function totals(){const gifts=ships.reduce((a,x)=>a+(+x.gifts||0),0);return {ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts,remaining:received-gifts}}
 function fmtDate(d){if(!d)return '–';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}`:d}
