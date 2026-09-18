@@ -82,6 +82,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
     </section>
     <div class="actions">
       <button type="button" class="secondary" onclick="showResult()">Visa resultat</button>
+      <span class="note" id="syncStatus">Synkroniserar med molnet…</span>
     </div>
     <section class="card">
       <h2>Registrerade fartyg</h2>
@@ -143,6 +144,7 @@ db.collection('julihamn').doc('data').onSnapshot(doc=>{
     received=+(data.received||0);
     ships=Array.isArray(data.ships)?data.ships:[];
     render();
+    $('syncStatus').textContent='Synkroniserad '+new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
   }
 });const $=id=>document.getElementById(id);
 function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
