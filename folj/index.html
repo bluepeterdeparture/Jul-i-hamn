@@ -53,7 +53,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 <div class="stat"><div class="n" id="statGifts">0</div><div class="l">Utdelade</div></div>
 <div class="stat"><div class="n" id="statRemaining">0</div><div class="l">Klappar kvar</div></div>
 </section>
-<div class="actions"><button type="button" class="secondary" onclick="showResult()">Visa resultat</button></div>
+<div class="actions"><button type="button" class="secondary" onclick="showResult()">Visa resultat</button><span id="syncStatus" style="color:#65727d;font-size:14px;align-self:center">Ansluter…</span></div>
 <section class="card"><h2>Registrerade fartyg</h2><div class="tablewrap"><table>
 <thead><tr><th>Fartyg</th><th>Datum</th><th class="num">Sjömän</th><th class="num">Julgåvor</th></tr></thead><tbody id="shipRows"></tbody>
 </table></div></section>
@@ -104,6 +104,7 @@ const data=doc.data()||{};
 received=+(data.received||0);
 ships=Array.isArray(data.ships)?data.ships:[];
 render();
+  $('syncStatus').textContent='Synkroniserad '+new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
 }
 },err=>{
 console.error('Kunde inte läsa molndata:',err);
