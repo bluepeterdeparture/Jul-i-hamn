@@ -8,23 +8,15 @@
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Jul i hamn" />
-<title>Jul i hamn 2026 – v0.1.12</title>
+<title>Jul i hamn 2026 – v0.2.0</title>
 <style>
 :root{
-  --navy:#243056;
-  --teal:#2f7f86;
-  --teal2:#6bb0ad;
-  --sand:#f4efe7;
-  --paper:#ffffff;
-  --ink:#15212b;
-  --muted:#65727d;
-  --line:#dbe2e6;
-  --ok:#2f7d58;
-  --danger:#a33b3b;
+  --navy:#243056;--teal:#2f7f86;--teal2:#6bb0ad;--sand:#f4efe7;--paper:#ffffff;
+  --ink:#15212b;--muted:#65727d;--line:#dbe2e6;--ok:#2f7d58;--danger:#a33b3b;
 }
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:linear-gradient(180deg,#dfeff0 0,#f7f3ec 46%,#f7f3ec 100%);color:var(--ink)}
-.app{max-width:920px;margin:0 auto;min-height:100vh;background:rgba(255,255,255,.72)}
+.app{max-width:920px;margin:0 auto;min-height:100vh;background:rgba(255,255,255,.72);display:none}
 .hero{position:relative;padding:28px 22px 24px;background:linear-gradient(135deg,var(--teal),#3b8f95 55%,var(--teal2));color:#fff;overflow:hidden}
 .hero:after{content:"";position:absolute;right:-70px;bottom:-95px;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.09)}
 .brandrow{display:flex;gap:12px;justify-content:space-between;align-items:flex-start}
@@ -42,7 +34,8 @@ h1{font-size:42px;line-height:1;margin:34px 0 8px;letter-spacing:-1.2px}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:14px;box-shadow:0 4px 14px rgba(25,39,52,.04)}
 .card h2{margin:0 0 14px;font-size:20px;color:var(--navy)}
 .grid{display:grid;grid-template-columns:1fr;gap:10px}
-.grid>div{min-width:0;max-width:100%}.grid .wide{grid-column:1/-1}label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}
+.grid>div{min-width:0;max-width:100%}.grid .wide{grid-column:1/-1}
+label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}
 input{width:100%;min-width:0;max-width:100%;font:inherit;border:1px solid #cdd7dc;border-radius:10px;padding:11px 12px;background:#fff;color:var(--ink)}
 input:focus{outline:2px solid rgba(47,127,134,.2);border-color:var(--teal)}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
@@ -51,199 +44,189 @@ button{appearance:none;border:0;border-radius:10px;padding:11px 14px;font:inheri
 table{width:100%;border-collapse:collapse;font-size:14px}th,td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}th{font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}td.num,th.num{text-align:right}.empty{padding:22px 6px;color:var(--muted);text-align:center}
 .smallbtn{padding:7px 9px;font-size:12px}
 .result{display:none;background:linear-gradient(180deg,#fff,#fbf7ef);border:2px solid #dde6e8}.result.show{display:block}.resultHead{text-align:center;padding:10px 4px 4px}.resultHead h2{font-size:30px;margin-bottom:4px}.resultHead p{margin:0;color:var(--muted)}
-.resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.resultStat{border-radius:14px;padding:18px;background:#fff;border:1px solid var(--line);text-align:center}.resultStat strong{display:block;font-size:36px;color:var(--navy)}.thanks{text-align:center;font-size:18px;font-weight:700;color:var(--navy);padding:10px 20px 4px}.logosBottom{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:12px 0 4px}
+.resultStats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}.resultStat{border-radius:14px;padding:18px;background:#fff;border:1px solid var(--line);text-align:center}.resultStat strong{display:block;font-size:36px;color:var(--navy)}.thanks{text-align:center;font-size:18px;font-weight:700;color:var(--navy);padding:10px 20px 4px}
 .printShips{display:none;margin-top:26px;border-top:1px solid var(--line);padding-top:18px}.printShips h3{margin:0 0 10px;color:var(--navy);font-size:20px}.printShips ul{margin:0;padding-left:22px;columns:2;column-gap:34px}.printShips li{margin:0 0 6px;break-inside:avoid;font-size:14px}
 .note{font-size:12px;color:var(--muted);margin-top:10px}
+.syncstatus{font-size:12px;color:var(--muted);margin-top:8px}
 footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
-@media(max-width:700px){h1{font-size:36px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.grid .wide{grid-column:1/-1}.tablewrap{overflow:auto}.resultStats{grid-template-columns:1fr}.brandrow{display:block}.version{margin-top:10px}}
-@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}.result .actions{display:none!important}.printShips{display:block!important}}
 #loginBox{max-width:380px;margin:60px auto;padding:24px;text-align:center}
 #loginBox input{display:block;margin:12px 0}
 #loginBox button{width:100%;margin-top:4px}
 #loginError{color:var(--danger);font-size:14px}
-.app{display:none}
+@media(max-width:700px){h1{font-size:36px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.grid .wide{grid-column:1/-1}.tablewrap{overflow:auto}.resultStats{grid-template-columns:1fr}.brandrow{display:block}.version{margin-top:10px}}
+@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}.result .actions{display:none!important}.printShips{display:block!important}}
 </style>
 </head>
 <body>
 <div id="loginBox">
   <h2>Jul i hamn 2026</h2>
   <p>Logga in för operativ åtkomst</p>
-  <input id="loginEmail" type="email" placeholder="E-postadress">
-  <input id="loginPassword" type="password" placeholder="Lösenord">
+  <input id="loginEmail" type="email" placeholder="E-postadress" autocomplete="username">
+  <input id="loginPassword" type="password" placeholder="Lösenord" autocomplete="current-password">
   <button type="button" class="primary" id="loginBtn">Logga in</button>
   <p id="loginError"></p>
 </div>
-  <div class="app">
-  <header class="hero">
-    <div class="brandrow">
-      <div class="brand">
-        <div class="logo nh">Norrköpings<br>Hamn</div>
-        <div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div>
-      </div>
-    </div>
-    <div class="version">I samarbete</div>
-    <h1>Jul i hamn 2026</h1>
-    <p>Sprid lite julglädje till sjömän långt hemifrån.</p>
-  </header>
 
-  <main class="main">
-    <section class="stats" aria-label="Statistik">
-      <div class="stat"><div class="n" id="statShips">0</div><div class="l">Fartyg</div></div>
-      <div class="stat"><div class="n" id="statCrew">0</div><div class="l">Sjömän</div></div>
-      <div class="stat"><div class="n" id="statGifts">0</div><div class="l">Utdelade</div></div>
-      <div class="stat"><div class="n" id="statRemaining">0</div><div class="l">Klappar kvar</div></div>
-    </section>
+<div class="app">
+<header class="hero">
+  <div class="brandrow"><div class="brand"><div class="logo nh">Norrköpings<br>Hamn</div><div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div></div></div>
+  <div class="version">I samarbete</div>
+  <h1>Jul i hamn 2026</h1>
+  <p>Sprid lite julglädje till sjömän långt hemifrån.</p>
+</header>
 
-    <section class="card">
-      <h2>Klappar från hamnen</h2>
-      <div class="grid">
-        <div class="wide"><label for="received">Klappar mottagna från hamnen</label><input id="received" type="number" min="0" inputmode="numeric" placeholder="0"></div>
-      </div>
-      <div class="actions">
-        <button type="button" class="primary" onclick="saveReceived()">Spara antal</button>
-      </div>
-      <div class="note">Klappar kvar räknas automatiskt som mottagna klappar minus utdelade julgåvor.</div>
-    </section>
+<main class="main">
+<section class="stats" aria-label="Statistik">
+  <div class="stat"><div class="n" id="statShips">0</div><div class="l">Fartyg</div></div>
+  <div class="stat"><div class="n" id="statCrew">0</div><div class="l">Sjömän</div></div>
+  <div class="stat"><div class="n" id="statGifts">0</div><div class="l">Utdelade</div></div>
+  <div class="stat"><div class="n" id="statRemaining">0</div><div class="l">Klappar kvar</div></div>
+</section>
 
-    <section class="card">
-      <h2>Registrera utdelning</h2>
-      <div class="grid">
-        <div class="wide"><label for="ship">Fartyg</label><input id="ship" placeholder="Ex. M/T Example"></div>
-        <div><label for="date">Datum</label><input id="date" type="date"></div>
-        <div><label for="crew">Sjömän</label><input id="crew" type="number" min="0" inputmode="numeric" placeholder="0"></div>
-        <div><label for="gifts">Julgåvor</label><input id="gifts" type="number" min="0" inputmode="numeric" placeholder="0"></div>
-      </div>
-      <div class="actions">
-        <button type="button" class="primary" id="addBtn" onclick="addShip()">Lägg till</button>
-        <button type="button" class="secondary" id="resultBtn" onclick="showResult()">Visa resultat</button>
-      </div>
-      <div class="note">Uppgifterna sparas bara på den här enheten i prototypen.</div>
-    </section>
+<section class="card">
+  <h2>Klappar från hamnen</h2>
+  <div class="grid"><div class="wide"><label for="received">Klappar mottagna från hamnen</label><input id="received" type="number" min="0" inputmode="numeric" placeholder="0"></div></div>
+  <div class="actions"><button type="button" class="primary" onclick="saveReceived()">Spara antal</button></div>
+  <div class="note">Klappar kvar räknas automatiskt som mottagna klappar minus utdelade julgåvor.</div>
+  <div class="syncstatus" id="syncStatus">Ansluter till molnet…</div>
+</section>
 
-    <section class="card">
-      <h2>Registrerade fartyg</h2>
-      <div class="tablewrap">
-        <table>
-          <thead><tr><th>Fartyg</th><th>Datum</th><th class="num">Sjömän</th><th class="num">Julgåvor</th><th></th></tr></thead>
-          <tbody id="shipRows"></tbody>
-        </table>
-      </div>
-      <details style="margin-top:12px">
-        <summary style="cursor:pointer;color:var(--muted);font-size:12px">Fler alternativ</summary>
-        <div class="actions"><button type="button" class="danger smallbtn" id="clearBtn" onclick="clearData()">Rensa all testdata</button></div>
-      </details>
-    </section>
+<section class="card">
+  <h2>Registrera utdelning</h2>
+  <div class="grid">
+    <div class="wide"><label for="ship">Fartyg</label><input id="ship" placeholder="Ex. M/T Example"></div>
+    <div><label for="date">Datum</label><input id="date" type="date"></div>
+    <div><label for="crew">Sjömän</label><input id="crew" type="number" min="0" inputmode="numeric" placeholder="0"></div>
+    <div><label for="gifts">Julgåvor</label><input id="gifts" type="number" min="0" inputmode="numeric" placeholder="0"></div>
+  </div>
+  <div class="actions"><button type="button" class="primary" onclick="addShip()">Lägg till</button><button type="button" class="secondary" onclick="showResult()">Visa resultat</button></div>
+  <div class="note">Uppgifterna sparas gemensamt i molnet och synkroniseras mellan anslutna enheter.</div>
+</section>
 
-    <section class="card result" id="resultCard">
-      <div class="resultHead">
-        <div class="brand" style="justify-content:center;margin-bottom:16px">
-          <div class="logo nh">Norrköpings<br>Hamn</div>
-          <div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div>
-        </div>
-        <h2>Jul i hamn 2026</h2>
-        <p>Tillsammans sprider vi julglädje till sjömän långt hemifrån</p>
-      </div>
-      <div class="resultStats">
-        <div class="resultStat"><strong id="resShips">0</strong>fartyg besökta</div>
-        <div class="resultStat"><strong id="resCrew">0</strong>sjömän nådda</div>
-        <div class="resultStat"><strong id="resGifts">0</strong>julgåvor utdelade</div>
-      </div>
-      <div class="thanks" id="thanksText">Tack till alla företag och organisationer som gjorde Jul i hamn möjligt.</div>
-      <div class="printShips">
-        <h3>Besökta fartyg</h3>
-        <ul id="printShipList"></ul>
-      </div>
-      <div class="actions" style="justify-content:center;margin-top:18px">
-        <button class="primary" onclick="window.print()">Skriv ut / spara som PDF</button>
-        <button type="button" class="ghost" id="hideResultBtn" onclick="hideResult()">Tillbaka</button>
-      </div>
-    </section>
-  </main>
+<section class="card">
+  <h2>Registrerade fartyg</h2>
+  <div class="tablewrap"><table><thead><tr><th>Fartyg</th><th>Datum</th><th class="num">Sjömän</th><th class="num">Julgåvor</th><th></th></tr></thead><tbody id="shipRows"></tbody></table></div>
+  <details style="margin-top:12px"><summary style="cursor:pointer;color:var(--muted);font-size:12px">Fler alternativ</summary><div class="actions"><button type="button" class="danger smallbtn" onclick="clearData()">Rensa all testdata</button></div></details>
+</section>
 
-  <footer>Version 0.1.12</footer>
+<section class="card result" id="resultCard">
+  <div class="resultHead"><div class="brand" style="justify-content:center;margin-bottom:16px"><div class="logo nh">Norrköpings<br>Hamn</div><div class="logo placeholder">Sjömanskyrkan<br>i Norrköping</div></div><h2>Jul i hamn 2026</h2><p>Tillsammans sprider vi julglädje till sjömän långt hemifrån</p></div>
+  <div class="resultStats"><div class="resultStat"><strong id="resShips">0</strong>fartyg besökta</div><div class="resultStat"><strong id="resCrew">0</strong>sjömän nådda</div><div class="resultStat"><strong id="resGifts">0</strong>julgåvor utdelade</div></div>
+  <div class="thanks">Tack till alla företag och organisationer som gjorde Jul i hamn möjligt.</div>
+  <div class="printShips"><h3>Besökta fartyg</h3><ul id="printShipList"></ul></div>
+  <div class="actions" style="justify-content:center;margin-top:18px"><button class="primary" onclick="window.print()">Skriv ut / spara som PDF</button><button type="button" class="ghost" onclick="hideResult()">Tillbaka</button></div>
+</section>
+</main>
+<footer>Version 0.2.0</footer>
 </div>
+
 <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script><script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBAYZk96JGVKOe6dqzifplj3wEylJ5V92M",
-  authDomain: "jul-i-hamn-2026.firebaseapp.com",
-  projectId: "jul-i-hamn-2026",
-  storageBucket: "jul-i-hamn-2026.firebasestorage.app",
-  messagingSenderId: "654694924451",
-  appId: "1:654694924451:web:4f2bccb88ec8ab988eff16"
+<script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig={
+  apiKey:"AIzaSyBAYZk96JGVKOe6dqzifplj3wEylJ5V92M",
+  authDomain:"jul-i-hamn-2026.firebaseapp.com",
+  projectId:"jul-i-hamn-2026",
+  storageBucket:"jul-i-hamn-2026.firebasestorage.app",
+  messagingSenderId:"654694924451",
+  appId:"1:654694924451:web:4f2bccb88ec8ab988eff16"
 };
-  firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-  const auth = firebase.auth();
-  const cloudDoc = db.collection('julihamn').doc('data');
-  async function saveCloud(){await cloudDoc.set({received,ships});}
-  const STORE_SHIPS='julihamn2026_ships_v01';
-const STORE_RECEIVED='julihamn2026_received_v01';
-let received=+(localStorage.getItem(STORE_RECEIVED)||0);
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+const auth=firebase.auth();
+const cloudDoc=db.collection('julihamn').doc('data');
+
+let received=0;
 let ships=[];
-try{
-  ships=JSON.parse(localStorage.getItem(STORE_SHIPS)||'[]');
-}catch(e){
-  ships=[];
-}
+let unsubscribe=null;
 const $=id=>document.getElementById(id);
+
 function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function save(){
-  try{localStorage.setItem(STORE_SHIPS,JSON.stringify(ships));}catch(e){}
-db.collection('julihamn').doc('data').set({ships:ships},{merge:true});
-  render();
-  
-}
-function totals(){const gifts=ships.reduce((a,x)=>a+(+x.gifts||0),0);return {ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts,remaining:received-gifts}}
+function totals(){const gifts=ships.reduce((a,x)=>a+(+x.gifts||0),0);return{ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts,remaining:received-gifts}}
 function fmtDate(d){if(!d)return '–';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}`:d}
 function render(){
- const t=totals();
- $('statShips').textContent=t.ships;$('statCrew').textContent=t.crew;$('statGifts').textContent=t.gifts;$('statRemaining').textContent=t.remaining;
- $('resShips').textContent=t.ships;$('resCrew').textContent=t.crew;$('resGifts').textContent=t.gifts;
- $('shipRows').innerHTML=ships.length?ships.map((x,i)=>`<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num">${+x.gifts||0}</td><td class="num"><button class="ghost smallbtn" onclick="removeShip(${i})">Ta bort</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
- $('printShipList').innerHTML=ships.length?ships.map(x=>`<li>${esc(x.ship)}${x.date?` – ${fmtDate(x.date)}`:''}</li>`).join(''):'<li>Inga fartyg registrerade.</li>';
+  const t=totals();
+  $('statShips').textContent=t.ships;$('statCrew').textContent=t.crew;$('statGifts').textContent=t.gifts;$('statRemaining').textContent=t.remaining;
+  $('resShips').textContent=t.ships;$('resCrew').textContent=t.crew;$('resGifts').textContent=t.gifts;
+  $('received').value=received||'';
+  $('shipRows').innerHTML=ships.length?ships.map((x,i)=>`<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num">${+x.gifts||0}</td><td class="num"><button class="ghost smallbtn" onclick="removeShip(${i})">Ta bort</button></td></tr>`).join(''):`<tr><td colspan="5" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
+  $('printShipList').innerHTML=ships.length?ships.map(x=>`<li>${esc(x.ship)}${x.date?` – ${fmtDate(x.date)}`:''}</li>`).join(''):'<li>Inga fartyg registrerade.</li>';
 }
-window.removeShip=i=>{ships.splice(i,1);save()};
-function saveReceived(){
- received=+$('received').value||0;
- try{localStorage.setItem(STORE_RECEIVED,String(received));}catch(e){}
- render();
+function markSynced(){
+  const t=new Date().toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+  $('syncStatus').textContent=`Synkroniserad med molnet ${t}`;
 }
-function addShip(){
- const ship=$('ship').value.trim(),date=$('date').value,crew=+$('crew').value||0,gifts=+$('gifts').value||0;
- if(!ship){alert('Skriv in fartygsnamn.');return;}
- ships.push({ship,date,crew,gifts});
- $('ship').value='';$('crew').value='';$('gifts').value='';
- save();
+async function saveReceived(){
+  const value=+$('received').value||0;
+  $('syncStatus').textContent='Sparar…';
+  try{await cloudDoc.set({received:value},{merge:true})}
+  catch(e){$('syncStatus').textContent='Kunde inte spara – kontrollera anslutningen.';console.error(e)}
 }
-function showResult(){
- $('resultCard').classList.add('show');
- $('resultCard').scrollIntoView({behavior:'smooth'});
+async function addShip(){
+  const ship=$('ship').value.trim(),date=$('date').value,crew=+$('crew').value||0,gifts=+$('gifts').value||0;
+  if(!ship){alert('Skriv in fartygsnamn.');return}
+  $('syncStatus').textContent='Sparar…';
+  try{
+    await db.runTransaction(async transaction=>{
+      const snap=await transaction.get(cloudDoc);
+      const current=snap.exists&&Array.isArray(snap.data().ships)?snap.data().ships:[];
+      transaction.set(cloudDoc,{ships:[...current,{ship,date,crew,gifts}]},{merge:true});
+    });
+    $('ship').value='';$('crew').value='';$('gifts').value='';
+  }catch(e){$('syncStatus').textContent='Kunde inte spara – kontrollera anslutningen.';console.error(e)}
 }
-function hideResult(){
- $('resultCard').classList.remove('show');
+async function removeShip(i){
+  const target=ships[i];if(!target)return;
+  $('syncStatus').textContent='Sparar…';
+  try{
+    await db.runTransaction(async transaction=>{
+      const snap=await transaction.get(cloudDoc);
+      const current=snap.exists&&Array.isArray(snap.data().ships)?snap.data().ships:[];
+      const idx=current.findIndex(x=>x.ship===target.ship&&x.date===target.date&&(+x.crew||0)===(+target.crew||0)&&(+x.gifts||0)===(+target.gifts||0));
+      if(idx>=0){current.splice(idx,1);transaction.set(cloudDoc,{ships:current},{merge:true})}
+    });
+  }catch(e){$('syncStatus').textContent='Kunde inte spara – kontrollera anslutningen.';console.error(e)}
 }
-function clearData(){
- if(confirm('Rensa all testdata i prototypen?')){ships=[];save();}
+async function clearData(){
+  if(!confirm('Rensa all testdata?'))return;
+  $('syncStatus').textContent='Rensar…';
+  try{await cloudDoc.set({received:0,ships:[]},{merge:true})}
+  catch(e){$('syncStatus').textContent='Kunde inte rensa – kontrollera anslutningen.';console.error(e)}
 }
+function showResult(){$('resultCard').classList.add('show');$('resultCard').scrollIntoView({behavior:'smooth'})}
+function hideResult(){$('resultCard').classList.remove('show')}
+function startCloudSync(){
+  if(unsubscribe)unsubscribe();
+  unsubscribe=cloudDoc.onSnapshot(snap=>{
+    if(snap.exists){
+      const d=snap.data();
+      received=+d.received||0;
+      ships=Array.isArray(d.ships)?d.ships:[];
+    }else{
+      received=0;ships=[];
+    }
+    render();markSynced();
+  },e=>{$('syncStatus').textContent='Kunde inte läsa molndata.';console.error(e)});
+}
+
 $('date').value=new Date().toISOString().slice(0,10);
-$('received').value=received||'';
 render();
+
 $('loginBtn').onclick=async()=>{
   const email=$('loginEmail').value.trim();
   const password=$('loginPassword').value;
   $('loginError').textContent='';
-  try{
-    await auth.signInWithEmailAndPassword(email,password);
-  }catch(e){
-    $('loginError').textContent='Fel e-postadress eller lösenord.';
-  }
+  try{await auth.signInWithEmailAndPassword(email,password)}
+  catch(e){$('loginError').textContent='Fel e-postadress eller lösenord.'}
 };
+$('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')$('loginBtn').click()});
 
 auth.onAuthStateChanged(user=>{
   $('loginBox').style.display=user?'none':'block';
   document.querySelector('.app').style.display=user?'block':'none';
+  if(user){startCloudSync()}
+  else if(unsubscribe){unsubscribe();unsubscribe=null}
 });
 </script>
 </body>
