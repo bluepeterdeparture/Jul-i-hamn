@@ -85,13 +85,14 @@ const cloudDoc=db.collection('julihamn').doc('data');
 let received=0,ships=[];
 const $=id=>document.getElementById(id);
 function esc(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
-function totals(){const gifts=ships.reduce((a,x)=>a+(+x.gifts||0),0);return{ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts,remaining:received-gifts}}
+function totals(){const gifts=ships.reduce((a,x)=>a+(+x.gifts||0),0);const shortage=ships.reduce((a,x)=>a+Math.max(0,(+x.crew||0)-(+x.gifts||0)),0);return{ships:ships.length,crew:ships.reduce((a,x)=>a+(+x.crew||0),0),gifts,remaining:shortage>0?-shortage:received-gifts}}
 function fmtDate(d){if(!d)return '–';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}`:d}
 function render(){
 const t=totals();
 $('statShips').textContent=t.ships;$('statCrew').textContent=t.crew;$('statGifts').textContent=t.gifts;$('statRemaining').textContent=t.remaining;
+$('statRemaining').style.color=t.remaining<0?'var(--danger)':'var(--navy)';
 $('resShips').textContent=t.ships;$('resCrew').textContent=t.crew;$('resGifts').textContent=t.gifts;
-$('shipRows').innerHTML=ships.length?ships.map(x=>`<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num">${+x.gifts||0}</td></tr>`).join(''):`<tr><td colspan="4" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
+$('shipRows').innerHTML=ships.length?ships.map(x=>{const missing=(+x.gifts||0)<(+x.crew||0);return `<tr><td>${esc(x.ship)}</td><td>${fmtDate(x.date)}</td><td class="num">${+x.crew||0}</td><td class="num" style="${missing?'color:var(--danger);font-weight:700':''}">${+x.gifts||0}</td></tr>`}).join(''):`<tr><td colspan="4" class="empty">Inga fartyg registrerade ännu.</td></tr>`;
 $('printShipList').innerHTML=ships.length?ships.map(x=>`<li>${esc(x.ship)}${x.date?` – ${fmtDate(x.date)}`:''}</li>`).join(''):'<li>Inga fartyg registrerade.</li>';
 }
 function showResult(){$('resultCard').classList.add('show');$('resultCard').scrollIntoView({behavior:'smooth'})}
