@@ -54,7 +54,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 #loginBox button{width:100%;margin-top:4px}
 #loginError{color:var(--danger);font-size:14px}
 @media(max-width:700px){h1{font-size:36px}.stats{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.grid .wide{grid-column:1/-1}.tablewrap{overflow:auto}.resultStats{grid-template-columns:1fr}.brandrow{display:block}.version{margin-top:10px}}
-@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:95vh;padding:40px}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}.result .actions{display:none!important}.printShips{display:block!important}}
+@media print{body{background:#fff}.hero,.stats,.card:not(.result),footer{display:none!important}.app{max-width:none;min-height:0;background:#fff}.main{padding:0}.result{display:block!important;border:0;box-shadow:none;min-height:0;padding:12px;break-after:auto}.resultHead h2{font-size:42px}.resultStat strong{font-size:56px}.result .actions{display:none!important}.printShips{display:block!important}}
 </style>
 </head>
 <body>
@@ -105,6 +105,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
 
 <section class="card">
   <h2>Registrerade fartyg</h2>
+  <p id="deleteStatus" role="status" aria-live="polite" style="color:var(--muted);font-size:14px"></p>
   <div class="tablewrap"><table><thead><tr><th>Fartyg</th><th>Datum</th><th class="num">Sjömän</th><th class="num">Julgåvor</th><th></th></tr></thead><tbody id="shipRows"></tbody></table></div>
   <details style="margin-top:12px"><summary style="cursor:pointer;color:var(--muted);font-size:12px">Fler alternativ</summary><div class="actions"><button type="button" class="danger smallbtn" onclick="clearData()">Rensa all testdata</button></div></details>
 </section>
@@ -117,7 +118,7 @@ footer{padding:18px;text-align:center;color:var(--muted);font-size:12px}
   <div class="actions" style="justify-content:center;margin-top:18px"><button type="button" class="primary" onclick="printReport()">Öppna utskriftsvy</button><button type="button" class="ghost" onclick="hideResult()">Tillbaka</button></div>
 </section>
 </main>
-<footer>Version 1.0.2</footer>
+<footer>Version 1.0.3</footer>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/12.2.1/firebase-app-compat.js"></script>
@@ -178,16 +179,26 @@ async function addShip(){
   }catch(e){$('syncStatus').textContent='Kunde inte spara – kontrollera anslutningen.';console.error(e)}
 }
 async function removeShip(i){
-  const target=ships[i];if(!target)return;
-  $('syncStatus').textContent='Sparar…';
+  const target=ships[i];
+  if(!target)return;
+  if(!confirm(`Ta bort ${target.ship} från registrerade fartyg?`))return;
+  const status=$('deleteStatus');
+  status.textContent='Tar bort fartyget…';
   try{
-    await db.runTransaction(async transaction=>{
+    const removed=await db.runTransaction(async transaction=>{
       const snap=await transaction.get(cloudDoc);
       const current=snap.exists&&Array.isArray(snap.data().ships)?snap.data().ships:[];
       const idx=current.findIndex(x=>x.ship===target.ship&&x.date===target.date&&(+x.crew||0)===(+target.crew||0)&&(+x.gifts||0)===(+target.gifts||0));
-      if(idx>=0){current.splice(idx,1);transaction.set(cloudDoc,{ships:current},{merge:true})}
+      if(idx<0)return false;
+      const updated=current.filter((_,j)=>j!==idx);
+      transaction.set(cloudDoc,{ships:updated},{merge:true});
+      return true;
     });
-  }catch(e){$('syncStatus').textContent='Kunde inte spara – kontrollera anslutningen.';console.error(e)}
+    status.textContent=removed?'Fartyget har tagits bort.':'Fartyget hittades inte. Uppdatera sidan och försök igen.';
+  }catch(e){
+    status.textContent='Det gick inte att ta bort fartyget. Kontrollera anslutningen och försök igen.';
+    console.error('removeShip failed',e);
+  }
 }
 async function clearData(){
   if(!confirm('Rensa all testdata?'))return;
